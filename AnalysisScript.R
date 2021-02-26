@@ -1,0 +1,119 @@
+#file to be modified
+library(seewave)
+library(fftw)
+library(tuneR)
+library(audio)
+library(forecast)
+
+
+power_spectrum_wav<-function(file_name, start_time, end_time, title){
+  
+  #load the song
+  Song_sound <- load.wave(file_name)
+  #extract a mono wav file in this case the left side is chosen
+  song_left<-readWave(file_name)@left
+  hdr2 <- readWave(file_name,
+                   header=TRUE)
+  song_left<- Wave(song_left, samp.rate=hdr2$sample.rate, bit=hdr2$bits)
+  
+  
+  song_left<-ffilter(song_left,to=10000,output='Wave',bandpass = TRUE)
+  song_left<-song_left*song_left #square the voltage
+  
+  #calculates the power spectral density against amplitude, then finds their log and plots it
+  spectra_song<-spec(song_left, from=start_time, to=end_time, PSD=TRUE, col="red", correction="energy",scaled=FALSE,plot=TRUE)
+  spectra_song<-spectra_song
+
+  
+  spectra_song[,1:2]<-log10(spectra_song[,1:2])#change the spectral density to log
+  print(head(spectra_song[,1:2]))
+  plot(spectra_song,type='l',main=title, xlab='log10(f) kHz', ylab='log10(Sv)')
+  
+  
+  #removing the first row to get rid of -infinity in order to calculate the gradient
+  x_axis<-spectra_song[-1,1]
+  y_axis<-spectra_song[-1,2]
+  
+
+  if(length(which(is.na(x_axis)))>0){
+  #clear the NAs to find slope
+    x_axis_cleared<-x_axis[-which(is.na(x_axis))]
+    y_axis_cleared<-y_axis[-which(is.na(x_axis))]
+    gradient<-cor(x_axis_cleared,y_axis_cleared)
+  }
+  else{
+    gradient<-cor(x_axis,y_axis)
+  }
+  
+  return(gradient)
+  
+}
+
+power_spectrum_wav_butterLowpass<-function(file_name, start_time, end_time, title){
+  
+  
+  #load the song
+  Song_sound <- load.wave(file_name)
+  #extract a mono wav file in this case the left side is chosen
+  song_left<-readWave(file_name)@left
+  hdr2 <- readWave(file_name,
+                   header=TRUE)
+  song_left<- Wave(song_left, samp.rate=hdr2$sample.rate, bit=hdr2$bits)
+ 
+  song_left<-ffilter(song_left,to=10000,output='Wave',bandpass = TRUE) #bandpass filter max 10kHz
+  song_left<-song_left*song_left #square the voltage
+  
+  #calculates the power spectral density against amplitude, then finds their log and plots it
+  spectra_song<-spec(song_left, from=start_time, to=end_time, PSD=TRUE, col="red", correction="energy",scaled=FALSE,plot=TRUE)
+  
+  print(head(spectra_song[,1:2]))
+  
+  butterSpec<- butter.H(spect=spectra_song, fc=20, n=0.05) #Butterworth filter max 20Hz
+
+  
+  butterSpec[,1:2]<-log10(butterSpec[,1:2])#change the spectral density to log
+  print(head(butterSpec[,1:2]))
+  plot(butterSpec,type='l', main=title, xlab='log10(f) Hz', ylab='log10(Sv)')
+  #removing the first row to get rid of -infinity in order to calculate the gradient
+  
+  
+  x_axis<-butterSpec[-1,1]
+  y_axis<-butterSpec[-1,2]
+  
+  
+  if(length(which(is.na(x_axis)))>0){
+    #clear the NAs to find slope
+    x_axis_cleared<-x_axis[-which(is.na(x_axis))]
+    y_axis_cleared<-y_axis[-which(is.na(x_axis))]
+    gradient<-cor(x_axis_cleared,y_axis_cleared)
+  }
+  else{
+    gradient<-cor(x_axis,y_axis)
+  }
+  
+  return(gradient)
+  
+  
+  
+}
+
+#pass the whole spectrum with a vector that has an x and y value as col
+butter.H <- function(spect, fc, n){
+  
+  freq=spect[,1]
+  H=spect[,2]
+  
+  s <- freq/fc
+  
+  H <- 1/sqrt(1+s^(2*n))
+  #H <- 20*log10(H)
+  
+  
+  sp<-cbind(freq,H)
+  print(head(sp))
+  
+  plot(sp,type='l',  main="Butterworth n=0.05", xlab='log10(f) Hz', ylab='log10(Sv)')
+  
+  return(sp) 
+  
+}
