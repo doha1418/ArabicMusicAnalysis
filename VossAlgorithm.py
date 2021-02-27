@@ -397,12 +397,11 @@ def CompletlyRandomPitchesPianoOnly(length,file_name):
 #debugging DiceThrow method
 dice=DiceThrow(7)
 pitch=CreatePitchViolin(dice)
-
 tree_sum1=VossTreeSum(pitch)
+MIDIGenerator(tree_sum1,'voss_7dice_noteTempo_try2')
 #AjamScale(20,'Taqaseem_try2_2violin')
 #CompletlyRandomPitchesPianoOnly(128,'RandomPitches_noVoss_v6_octave4and5')
 #CompletlyRandomPitchesNoVossAjamScale(64,'Scale_3arrangements_ajamJinDuration')
-MIDIGenerator(tree_sum1,'voss_7dice_noteTempo_try2')
 #MIDIGeneratorRandomizedDuration(tree_sum,'moreduration025_6dice')
 #MIDIGeneratorQuarterNotes(tree_sum,'lowerPitch_9dice_v3')
 #MIDIGeneratorQuarterNotesVersion2(tree_sum1,'2instruments_150tempo_v3')
