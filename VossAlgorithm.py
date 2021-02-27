@@ -51,7 +51,7 @@ def DiceThrow(diceAmount):
 def CreatePitchViolin(dice):
     
     voss_constraint_tree=[]
-    drange=int(128/len(dice))#determine the number of dice sides
+    drange=int(128/len(dice))#determine the maximum number on the dice
     
     #now create the pitch (the notes), by walking in col-row order
     for i in range(len(dice[0])):#col
@@ -88,7 +88,6 @@ def CreateDurationWRandomly(dice):
     
 #sum of tree returns an array with length equal to the bottom of the tree
 def VossTreeSum(tree):
-    
     
     temp=[]
     left_tree=[]
@@ -157,10 +156,12 @@ def MIDIGenerator(pitches,file_name):
 
      mf.addTrackName(track, time, "Voss Track") #
      
-     mf.addProgramChange(track,0,0,40) #start the track with a violin on channel 1
-     mf.addTempo(track,time,140) #standard tempo rate 150 BPM Considered fast
+    #start the track with a violin on channel 1
+     mf.addProgramChange(track,0,0,40) 
+    #standard tempo rate 150 BPM Considered fast
+     mf.addTempo(track,time,140) 
      
-     #a loop that adds a note using mf.addNote(track, channel, pitch, time, duration, volume)
+    
      scale_tempo=[1,1.5,1,1,1.5,1.5]
      note_duration=[1,0.5,0.5,1,0.5,1]
      t=[]
@@ -173,10 +174,9 @@ def MIDIGenerator(pitches,file_name):
              t.append(counter)
              counter+=scale_tempo[j]
              duration.append(note_duration[j])
-     
-     for i in range(1,len(pitches)):
-         #creates a monotone with no pauses
-         
+            
+    #a loop that adds a note using mf.addNote(track, channel, pitch, time, duration, volume)
+     for i in range(1,len(pitches)):  
          mf.addTempo(track,time,140)
          mf.addNote(track,channel,pitches[i],t[i],duration[i],100)
         
