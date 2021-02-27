@@ -104,11 +104,8 @@ butter.H <- function(spect, fc, n){
   H=spect[,2]
   
   s <- freq/fc
-  
   H <- 1/sqrt(1+s^(2*n))
-  #H <- 20*log10(H)
-  
-  
+ 
   sp<-cbind(freq,H)
   print(head(sp))
   
