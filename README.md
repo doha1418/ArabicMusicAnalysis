@@ -11,4 +11,4 @@
   - ## [A description of the audio generation methodology and Voss' algorithm](https://github.com/doha1418/ArabicMusicAnalysis/blob/main/AudioGeneration.ipynb)
 - ## [The R script that analyzes the power spectrum of audio](https://github.com/doha1418/ArabicMusicAnalysis/blob/main/AnalysisScript.R)
   - ## [Running the spectral analysis with R](https://github.com/doha1418/ArabicMusicAnalysis/blob/main/Run_Analysis.R)
-  - ## [Example of Effect of Fourier Transform on Waves] (https://github.com/doha1418/ArabicMusicAnalysis/blob/main/SpectralAnalysis.md)
+  - ## [Example of Effect of Fourier Transform on Waves](https://github.com/doha1418/ArabicMusicAnalysis/blob/main/SpectralAnalysis.md)
