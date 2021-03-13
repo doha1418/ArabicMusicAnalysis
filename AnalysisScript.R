@@ -19,31 +19,35 @@ power_spectrum_wav<-function(file_name, start_time, end_time, title){
   
   
   song_left<-ffilter(song_left,to=10000,output='Wave',bandpass = TRUE)
+  
   song_left<-song_left*song_left #square the voltage
+ 
   
   #calculates the power spectral density against amplitude, then finds their log and plots it
-  spectra_song<-spec(song_left, from=start_time, to=end_time, PSD=TRUE, col="red", correction="energy",scaled=FALSE,plot=TRUE)
-  spectra_song<-spectra_song
-
+  spectra_song<-spec(song_left, from=start_time, to=end_time, PSD=TRUE, col="red", correction="energy",scaled=FALSE,plot=FALSE)
+ # plot(spectra_song,type="h")
+  
+  spectra_song[,1]=spectra_song[,1]+1
+ 
   
   spectra_song[,1:2]<-log10(spectra_song[,1:2])#change the spectral density to log
   print(head(spectra_song[,1:2]))
-  plot(spectra_song,type='l',main=title, xlab='log10(f) kHz', ylab='log10(Sv)')
+  plot(spectra_song,type='l',main=title, xlab='log10(f) Hz', ylab='log10(Sv)')
   
   
   #removing the first row to get rid of -infinity in order to calculate the gradient
-  x_axis<-spectra_song[-1,1]
-  y_axis<-spectra_song[-1,2]
+  x_axis<-spectra_song[,1]
+  y_axis<-spectra_song[,2]
   
-
+  
   if(length(which(is.na(x_axis)))>0){
   #clear the NAs to find slope
     x_axis_cleared<-x_axis[-which(is.na(x_axis))]
     y_axis_cleared<-y_axis[-which(is.na(x_axis))]
-    gradient<-cor(x_axis_cleared,y_axis_cleared)
+    gradient<-cor(x_axis_cleared,y_axis_cleared, method="pearson")
   }
   else{
-    gradient<-cor(x_axis,y_axis)
+    gradient<-cor(x_axis_cleared,y_axis_cleared, method="pearson")
   }
   
   return(gradient)
@@ -66,10 +70,10 @@ power_spectrum_wav_butterLowpass<-function(file_name, start_time, end_time, titl
   
   #calculates the power spectral density against amplitude, then finds their log and plots it
   spectra_song<-spec(song_left, from=start_time, to=end_time, PSD=TRUE, col="red", correction="energy",scaled=FALSE,plot=TRUE)
-  
+  spectra_song[,1]=spectra_song[,1]+1
   print(head(spectra_song[,1:2]))
   
-  butterSpec<- butter.H(spect=spectra_song, fc=20, n=0.05) #Butterworth filter max 20Hz
+  butterSpec<- butter.H(spect=spectra_song, fc=20, n=1) #Butterworth filter max 20Hz
 
   
   butterSpec[,1:2]<-log10(butterSpec[,1:2])#change the spectral density to log
@@ -78,18 +82,18 @@ power_spectrum_wav_butterLowpass<-function(file_name, start_time, end_time, titl
   #removing the first row to get rid of -infinity in order to calculate the gradient
   
   
-  x_axis<-butterSpec[-1,1]
-  y_axis<-butterSpec[-1,2]
-  
+  x_axis<-butterSpec[,1]
+  y_axis<-butterSpec[,2]
+
   
   if(length(which(is.na(x_axis)))>0){
     #clear the NAs to find slope
     x_axis_cleared<-x_axis[-which(is.na(x_axis))]
     y_axis_cleared<-y_axis[-which(is.na(x_axis))]
-    gradient<-cor(x_axis_cleared,y_axis_cleared)
+    gradient<-cor(x_axis_cleared,y_axis_cleared, method="pearson")
   }
   else{
-    gradient<-cor(x_axis,y_axis)
+    gradient<-cor(x_axis_cleared,y_axis_cleared, method="pearson")
   }
   
   return(gradient)
