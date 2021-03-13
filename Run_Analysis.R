@@ -1,8 +1,17 @@
 source("AnalysisScript.R")
+directories<-read.csv("../audio/Music/Directories.csv",header = TRUE,stringsAsFactors=FALSE)
 
-power_spectrum_wav("./audio/EasternScales/Ajam_C.wav", start_time = 1, end_time = 20, title="Ajam_C")
 
-power_spectrum_wav_butterLowpass("./audio/EasternScales/BayatiRe.wav", start_time = 1, end_time = 12, title="BayatiRe")
+for (dir in c(1:11)){
+  print(directories[dir,"Directory"])
+  gradient<-power_spectrum_wav( file_name=directories[dir,"Directory"], start_time = 1, end_time = 7, title=directories[dir,"TrackName"])
+  print(gradient)
+  
+}
+
+power_spectrum_wav("../audio/WhiteNoise2.wav", start_time = 1, end_time = 7, title="White Noise")
+
+power_spectrum_wav_butterLowpass("../audio/WhiteNoise2.wav", start_time = 1, end_time = 10, title="White Noise Voss and Clarke's Model")
 
 
 
