@@ -47,7 +47,7 @@ power_spectrum_wav<-function(file_name, start_time, end_time, title){
     gradient<-cor(x_axis_cleared,y_axis_cleared, method="pearson")
   }
   else{
-    gradient<-cor(x_axis_cleared,y_axis_cleared, method="pearson")
+    gradient<-cor(x_axis,y_axis, method="pearson")
   }
   
   return(gradient)
@@ -93,7 +93,7 @@ power_spectrum_wav_butterLowpass<-function(file_name, start_time, end_time, titl
     gradient<-cor(x_axis_cleared,y_axis_cleared, method="pearson")
   }
   else{
-    gradient<-cor(x_axis_cleared,y_axis_cleared, method="pearson")
+    gradient<-cor(x_axis,y_axis, method="pearson")
   }
   
   return(gradient)

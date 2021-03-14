@@ -1,19 +1,16 @@
 source("AnalysisScript.R")
 directories<-read.csv("../audio/Music/Directories.csv",header = TRUE,stringsAsFactors=FALSE)
 
-gradient<- c()
+gradient<- cbind("Track Name","Correlation")
 
-for (dir in c(1:11)){
+for (dir in c(1:length(directories[,1]))){
   print(directories[dir,"Directory"])
-  gradient<-append(gradient,power_spectrum_wav( file_name=directories[dir,"Directory"]
-                  , start_time = 1, end_time = 7, title=directories[dir,"TrackName"]))
-  
-  
+  gradient<-rbind(gradient,c(directories[dir,"TrackName"],power_spectrum_wav( file_name=directories[dir,"Directory"]
+                  , start_time = 10, end_time = 11, title=directories[dir,"TrackName"])))
 }
-print(gradient)
-power_spectrum_wav("../audio/WhiteNoise2.wav", start_time = 1, end_time = 7, title="White Noise")
 
-power_spectrum_wav_butterLowpass("../audio/WhiteNoise2.wav", start_time = 1, end_time = 10, title="White Noise Voss and Clarke's Model")
+#Voss and Clarke filtering simulation
+power_spectrum_wav_butterLowpass("../audio/WhiteNoise2.wav", start_time = 10, end_time = 20, title="Firuz")
 
 
 
