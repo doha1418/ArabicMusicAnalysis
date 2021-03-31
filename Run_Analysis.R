@@ -1,8 +1,9 @@
 source("AnalysisScript.R")
 
 
-PSDAnalysis<- function(type="Standard", plot=TRUE, generateCSV=FALSE, timeLength=10, directory){
+PSDAnalysis<- function(type="Standard", plot=TRUE, generateCSV=FALSE, timeLength=10, directory=""){
   directories<-read.csv(directory,header = TRUE,stringsAsFactors=FALSE)
+  print(directories)
   gradient<- cbind("Track Name","Correlation")
   
   #calculate the time to be analysed
@@ -16,6 +17,7 @@ PSDAnalysis<- function(type="Standard", plot=TRUE, generateCSV=FALSE, timeLength
                                                                                   , start_time = from, end_time = to, title=directories[dir,"TrackName"])))
     }
   }
+  
   else if(type=="Butter"){
     for (dir in c(1:length(directories[,1]))){
       print(directories[dir,"Directory"])
@@ -28,7 +30,9 @@ PSDAnalysis<- function(type="Standard", plot=TRUE, generateCSV=FALSE, timeLength
 
 
 
+PSDAnalysis(type="Standard", plot=TRUE, generateCSV=FALSE, timeLength=10, directory="../audio/Music/Directories.csv")
 
 
-
+power_spectrum_wav( file_name="../audio/Music/TaqaseemAbadiAljawhar.wav"
+                    , start_time = 10, end_time = 20, title="Abadi Taqaseem")
 
