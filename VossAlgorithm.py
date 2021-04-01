@@ -12,7 +12,7 @@ import random, numpy as np
 class VossExperiment:
     
     
-    def _init_(self, diceAmount):
+    def __init__(self, diceAmount):
         self.diceAmount=diceAmount
 
     #===============================================
@@ -52,7 +52,7 @@ class VossExperiment:
     
     
         
-    def CreateVossTree(truthTable):
+    def CreateVossTree(self,truthTable):
         
         voss_constraint_tree=[]
         drange=int(128/len(truthTable))#determine the maximum number on the dice
@@ -73,7 +73,7 @@ class VossExperiment:
     
         
     #sum of tree returns an array with length equal to the bottom of the tree
-    def VossTreeSum(tree):
+    def VossTreeSum(self,tree):
         
         temp=[]
         left_tree=[]
@@ -153,7 +153,7 @@ class VossExperiment:
         return voss_constraint_tree  
     
     #uses a rythem to play each note from the Voss experiment     
-    def MIDIGeneratorSetTempoDuration(pitches,file_name):
+    def MIDIGeneratorSetTempoDuration(self,pitches,file_name):
         
         #create a midi file object to add the pitches to
          mf=MIDIFile(1,False)
@@ -194,7 +194,7 @@ class VossExperiment:
              mf.writeFile(outf)
               
     #Random note duration
-    def MIDIGeneratorRandomizedDuration(part1pitches,file_name):
+    def MIDIGeneratorRandomizedDuration(self,part1pitches,file_name):
         
          mf=MIDIFile(1,False)
          track=0
@@ -225,7 +225,7 @@ class VossExperiment:
              mf.writeFile(outf)
     
     #all notes set as quarter notes, no rythem         
-    def MIDIGeneratorQuarterNotes(part1pitches,file_name):
+    def MIDIGeneratorQuarterNotes(self,part1pitches,file_name):
         
          mf=MIDIFile(1,False)
          track=0
@@ -253,7 +253,7 @@ class VossExperiment:
              mf.writeFile(outf)
              
     
-    def MIDIGeneratorQuarterNotesVersion2(part1pitches,file_name):
+    def MIDIGeneratorQuarterNotesVersion2(self,part1pitches,file_name):
         
          mf=MIDIFile(1,False)
          track=0
@@ -298,27 +298,30 @@ class VossExperiment:
 class runVossExperiment:
     def main():
         
-        print("Experiment running: ")
-        diceAmount= input("Enter amount of dice to run in the experiment")
-        diceAmount=int(diceAmount)
+        try:
+            print("Experiment running: ")
+            diceAmount= input("Enter amount of dice to run in the experiment: ")
+            diceAmount=int(diceAmount)
+            
+            Experiment= VossExperiment(diceAmount)
+            
+            #create a truth table based on the number of dice required
+            truthTable=Experiment.DiceThrowTable()
+            tree=Experiment.CreateVossTree(truthTable)
+            
+            pitches=Experiment.VossTreeSum(tree)
+            
+            print("Experiment ran successfully")
+            generate=input("Enter Y to generate MIDI file and WAV file: ")
+            
+            
+            if(generate.lower()=="y"):
+                file_name=input("Enter a file name: ")
+                Experiment.MIDIGeneratorSetTempoDuration(pitches,file_name)
+        except:
+            print("Something went wrong")
         
-        Experiment= VossExperiment(diceAmount)
-        
-        #create a truth table based on the number of dice required
-        truthTable=Experiment.DiceThrowTable()
-        tree=Experiment.CreateVossTree(truthTable)
-        
-        pitches=Experiment.VossTreeSum(tree)
-        
-        print("Experiment ran successfully")
-        generate=input("Enter Y to generate MIDI file and WAV file: ")
-        
-        
-        if(generate.lower()=="y"):
-            file_name=input("Enter a file name: ")
-            Experiment.MIDIGeneratorSetTempoDuration(pitches,file_name)
-        
-                
+    main()
     
     
          
