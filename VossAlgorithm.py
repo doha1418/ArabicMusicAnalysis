@@ -131,26 +131,7 @@ class VossExperiment:
             i=0
         return left+right
     
-    #modify this function!!
-    def CreateDurationWRandomly(dice):
-        
-        voss_constraint_tree=[]
-        drange=2 #determine the number of dice sides
-        
-        #now create the pitch (the notes), by walking in col-row order
-        for i in range(len(dice[0])):#col
-            for j in range(len(dice)): #row
-                
-                if(i==0): #if it is the very first col toss all dice
-                   tempPitch=random(0,drange)
-                   voss_constraint_tree.append([tempPitch])#save each pitch to represent the top of the tree
-                else:
-                    if(dice[j][i]!=dice[j][i-1]):
-                        tempPitch=random(0,drange)
-                        voss_constraint_tree[j].append(tempPitch)
-         
-            
-        return voss_constraint_tree  
+    
     
     #uses a rythem to play each note from the Voss experiment     
     def MIDIGeneratorSetTempoDuration(self,pitches,file_name):
@@ -260,8 +241,6 @@ class VossExperiment:
          time=0
          channel=0
        
-         
-    
          mf.addTrackName(track, time, "Voss Track") 
          
          mf.addProgramChange(track,0,0,0) #start the track with a violin on channel 1
@@ -290,11 +269,7 @@ class VossExperiment:
     
     
              
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #TODO: add a main method and 
-    #TODO more logical method on how to run the program through the command line
-             #TODO create a function that creates the midi Track to remove redundancy
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!           
+   
 class runVossExperiment:
     def main():
         
@@ -314,25 +289,33 @@ class runVossExperiment:
             print("Experiment ran successfully")
             generate=input("Enter Y to generate MIDI file and WAV file: ")
             
-            
+            #other types of experiments missing
             if(generate.lower()=="y"):
+                
+                print("Choose the rhythmic effect")
+                print("1. Rhythem and tempo")
+                print("2. Mono-rhythmic and set duration ")
+                print("3. Semi-rhythmic and set duration ")
+                print("4. Mono-rhythmic and randomized durations")
+                expType=input("Enter here: ")
+                expType=int(expType)
                 file_name=input("Enter a file name: ")
-                Experiment.MIDIGeneratorSetTempoDuration(pitches,file_name)
+                
+                if(expType==1):
+                    Experiment.MIDIGeneratorSetTempoDuration(pitches,file_name)
+                    print("Experiment ran successfully")
+                elif(expType==2):
+                   Experiment.MIDIGeneratorRandomizedDuration(pitches,file_name)
+                   print("Experiment ran successfully")
+                elif(expType==3):
+                    Experiment.MIDIGeneratorQuarterNotesVersion2(pitches,file_name)
+                    print("Experiment ran successfully")
+                elif(expType==4):
+                    Experiment.MIDIGeneratorQuarterNotes(pitches,file_name)
+                    print("Experiment ran successfully")
+            else:
+                print("Program terminated")
         except:
             print("Something went wrong")
         
     main()
-    
-    
-         
-#debugging DiceThrow method
-#dice=DiceThrow(3)
-#print(dice)
-#pitch=CreatePitchViolin(dice)
-#print(pitch)
-#tree_sum=VossTreeSum(pitch)
-#print(tree_sum)
-#MIDIGeneratorSetTempoDuration(tree_sum,'voss_7dice_noteTempo_try2')
-#MIDIGeneratorRandomizedDuration(tree_sum,'moreduration025_6dice')
-#MIDIGeneratorQuarterNotes(tree_sum,'lowerPitch_9dice_v3')
-#MIDIGeneratorQuarterNotesVersion2(tree_sum,'2instruments_150tempo_v3')
