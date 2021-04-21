@@ -26,7 +26,7 @@ PSDAnalysis<- function(type="Standard", plot_=TRUE, movingAverage=TRUE, from=60,
   }
   
   if(generateCSV==TRUE){
-    write.csv(gradient,'powerSpectrum.csv')
+    write.csv(gradient,'powerSpectrumDemo.csv')
   }
   
   print(gradient)
@@ -34,12 +34,4 @@ PSDAnalysis<- function(type="Standard", plot_=TRUE, movingAverage=TRUE, from=60,
 }
 
 
-
-PSDAnalysis(type="Standard", plot=FALSE, generateCSV=TRUE,from=70, timeLength=10,movingAverage = FALSE, directory="../audio/Music/classic_lyrical/Directories1.csv")
-
-power_spectrum_wav( file_name= "../audio/Music/TaqaseemAbadiAljawhar.wav"
-                    , start_time = 60, end_time = 70, title="The Shadows")
-
-power_spectrum_wav_butterLowpass( file_name="../audio/Music/TaqaseemAbadiAljawhar.wav"
-                                  , start_time = 10, end_time = 20, title="Abadi Taqaseem")
 

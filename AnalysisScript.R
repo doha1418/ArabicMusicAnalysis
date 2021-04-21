@@ -60,7 +60,7 @@ power_spectrum_wav<-function(file_name, start_time, end_time, title, plot=TRUE, 
     gradient<-cor(x_axis,y_axis, method="pearson")
   }
   
-  return(gradient)
+  return(round(gradient, digits = 3))
   
 }
 
@@ -107,7 +107,7 @@ power_spectrum_wav_butterLowpass<-function(file_name, start_time, end_time, titl
     gradient<-cor(x_axis,y_axis, method="pearson")
   }
   
-  return(gradient)
+  return(round(gradient, digits = 3))
   
 }
 
