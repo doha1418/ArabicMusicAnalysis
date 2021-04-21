@@ -7,7 +7,7 @@ library(forecast)
 
 
 
-power_spectrum_wav<-function(file_name, start_time, end_time, title, plot=TRUE){
+power_spectrum_wav<-function(file_name, start_time, end_time, title, plot=TRUE, MV){
   
   #load the song
   Song_sound <- load.wave(file_name)
@@ -32,14 +32,22 @@ power_spectrum_wav<-function(file_name, start_time, end_time, title, plot=TRUE){
   
   spectra_song[,1:2]<-log10(spectra_song[,1:2])#change the spectral density to log
   
+  x_axis<-spectra_song[,1]
+  y_axis<-spectra_song[,2]
+  
+  #moving average set this as a seperate function
+  if(MV==TRUE){
+    movingAverage(spectra_song)
+  }
   
   if(plot==TRUE){
     plot(spectra_song,type='l',main=title, xlab='log10(f) Hz', ylab='log10(Sv)')
   }
   
   #removing the first row to get rid of -infinity in order to calculate the gradient
-  x_axis<-spectra_song[,1]
-  y_axis<-spectra_song[,2]
+ 
+  
+  
   
   
   if(length(which(is.na(x_axis)))>0){
@@ -101,6 +109,17 @@ power_spectrum_wav_butterLowpass<-function(file_name, start_time, end_time, titl
   
   return(gradient)
   
+}
+
+movingAverage<- function(spectra_song){
+  movingave<- filter(spectra_song, rep(1 / 50, 50), sides = 2)
+   v2<-movingave[,2]
+   x_axis_ave<-x_axis[-which(is.na(v2))]
+   v2<-v2[-which(is.na(v2))]
+   
+   plot(x_axis_ave,v2,type='l',main="Moving average")
+   gradient1<-lm(x_axis_ave ~ v2)
+   print(gradient1)
 }
 
 #pass the whole spectrum with a vector that has an x and y value as col
