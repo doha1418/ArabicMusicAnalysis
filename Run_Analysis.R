@@ -1,7 +1,7 @@
 source("AnalysisScript.R")
 
 
-PSDAnalysis<- function(type="Standard", plot_=TRUE, movingAverage=TRUE, from=60,generateCSV=FALSE, timeLength=10, directory=""){
+PSDAnalysis<- function(type="Standard", plot_=TRUE, movingAverage=TRUE, from=60,generateCSV=FALSE, timeLength=10, directory="", file_name="sample.csv"){
   directories<-read.csv(directory,header = TRUE,stringsAsFactors=FALSE)
   gradient<- cbind("Track Name","Correlation")
   
@@ -26,7 +26,7 @@ PSDAnalysis<- function(type="Standard", plot_=TRUE, movingAverage=TRUE, from=60,
   }
   
   if(generateCSV==TRUE){
-    write.csv(gradient,'powerSpectrumDemo.csv')
+    write.csv(gradient,file_name)
   }
   
   print(gradient)

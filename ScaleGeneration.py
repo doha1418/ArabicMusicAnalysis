@@ -55,7 +55,7 @@ class ScaleExperiment:
                      duration.append(duration_scale_ajam[j])
                      time.append(counter)
                      counter+=scale_tempo[j]
-         print(time)
+        
          
         
                 
@@ -80,7 +80,7 @@ class ScaleExperiment:
          with open(file_name+".mid", 'wb') as outf:
              mf.writeFile(outf)
     
-    def CompletlyRandomPitchesPianoOnly(self,length,file_name):
+    def CompletlyRandomPitches(self,length,file_name):
         
          mf=MIDIFile(1,False)
          track=0
@@ -90,7 +90,7 @@ class ScaleExperiment:
         
          mf.addTrackName(track, time, "Voss Track Random Pitches") 
          
-         mf.addProgramChange(track,0,0,0) #start the track with a violin on channel 1
+         mf.addProgramChange(track,0,0,40) #start the track with a violin on channel 1
          mf.addTempo(track,time,140) #standard tempo rate 150 BPM Considered fast
         
          
@@ -114,42 +114,43 @@ class ScaleExperiment:
          with open(file_name+".mid", 'wb') as outf:
              mf.writeFile(outf)
 class RunExperiment:
-     def main():
-        
-        try:
-            print("Experiment running: ")
-            length= input("Enter amount of runs in the experiment: ")
-            length=int(length)
+    def main():
+           
             
-            Experiment= ScaleExperiment(length)
-            
-            
-            print("Experiment ran successfully")
-            generate=input("Enter Y to generate MIDI file and WAV file: ")
-            
-            #other types of experiments missing
-            if(generate.lower()=="y"):
+            try:
+                print("Experiment running: ")
+                length= input("Enter amount of runs in the experiment: ")
+                length=int(length)
                 
-                print("Choose the rhythmic effect")
-                print("1. Ajam Arabic scale")
-                print("2. Randomized pitches ")
-             
-                expType=input("Enter here: ")
-                expType=int(expType)
+                Experiment= ScaleExperiment(length)
                 
-                file_name=input("Enter a file name: ")
                 
-                if(expType==1):
-                    Experiment.MIDIGeneratorSetTempoDuration(length,file_name)
-                    print("Experiment ran successfully")
-                elif(expType==2):
-                   Experiment.MIDIGeneratorRandomizedDuration(length,file_name)
-                   print("Experiment ran successfully")
+                print("Experiment ran successfully")
+                generate=input("Enter Y to generate MIDI file and WAV file: ")
                 
-            else:
-                print("Program terminated")
-        except:
-            print("Something went wrong")
+                #other types of experiments missing
+                if(generate.lower()=="y"):
+                    
+                    print("Choose the rhythmic effect")
+                    print("1. Ajam Arabic scale")
+                    print("2. Randomized pitches ")
+                 
+                    expType=input("Enter here: ")
+                    expType=int(expType)
+                    
+                    file_name=input("Enter a file name: ")
+                    
+                    if(expType==1):
+                        Experiment.AjamScale(length,file_name)
+                        print("Experiment ran successfully")
+                    elif(expType==2):
+                       Experiment.CompletlyRandomPitches(length,file_name)
+                       print("Experiment ran successfully")
+                    
+                else:
+                    print("Program terminated")
+            except:
+                print("Something went wrong")
 
-         
+    main() 
 
