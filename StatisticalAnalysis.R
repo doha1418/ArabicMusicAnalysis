@@ -2,10 +2,10 @@ source("Run_Analysis.R")
 
 PSDAnalysis(type="Standard", plot=FALSE, generateCSV=TRUE,from=2,
             timeLength=10,movingAverage = FALSE, 
-            directory="../audio/Music/EasternScales/MyFileList.csv", file_name="../audio/Music/EasternScales/PSDoutputDemonstration.csv")
+            directory="../improvSamples/Directories.csv", file_name="../improvSamples/PSDoutput10sec.csv")
 
-power_spectrum_wav( file_name= "../audio/Music/Instrumental/AlaHasbiWedad.wav"
-                    , start_time = 60, end_time = 70, MV = FALSE,title="AlaHasbiWedad")
+power_spectrum_wav( file_name= "../audio/bach.wav"
+                    , start_time = 0, end_time = 10, MV = FALSE,title="Bach")
 
 power_spectrum_wav_butterLowpass( file_name="../audio/Music/TaqaseemAbadiAljawhar.wav"
                                   , start_time = 10, end_time = 20,MV = FALSE, title="Abadi Taqaseem")

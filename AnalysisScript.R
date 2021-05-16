@@ -48,8 +48,6 @@ power_spectrum_wav<-function(file_name, start_time, end_time, title, plot=TRUE, 
  
   
   
-  
-  
   if(length(which(is.na(x_axis)))>0){
   #clear the NAs to find slope
     x_axis_cleared<-x_axis[-which(is.na(x_axis))]
